@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Declare the model argument -->
+  <arg name="model" default="$(find-pkg-share arduinobot_description)/urdf/arduinobot.xacro" description="Absolute path to robot urdf"/>
+
+  <!-- Use xacro to convert the model to urdf -->
+  <ros__param name="robot_description" command="$(find-pkg-share xacro)/xacro $(arg model)"/>
+
+  <!-- Launch the robot state publisher node -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" args="$(arg model)"/>
+
+  <!-- Launch the joint state publisher gui node -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" output="screen"/>
+
+  <!-- Launch the rviz2 node -->
+  <node name="rviz2" pkg="rviz2" type="rviz2" output="screen" args="-d /home/newton/ROS2/arduino_bot/src/arduinobot_description/rviz_config/rviz_sim.rviz"/>
+</launch>

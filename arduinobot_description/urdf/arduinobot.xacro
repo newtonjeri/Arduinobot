@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arduinobot">
+    
+    <!-- Contants -->
+    <xacro:property name="PI" value="3.14159265359"/>
+    
+    <!-- Properties -->
+    <xacro:property name="velocity" value="30.0"/>
+    <xacro:property name="effort" value="10.0"/>
+
+<!-- Inertial macro -->
+<xacro:macro name="default_inertial" params="mass">
+    <inertial>
+        <mass value="${mass}"/>
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+</xacro:macro>
+
+<!-- Transmission macro -->
+<xacro:macro name="default_transmisiion" params="joint">
+    <transmission name="${joint}_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${joint}" role = "joint_1">
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </joint>
+        <actuator name="${joint}_motor" role = "actuator_1"/>
+    </transmission>
+</xacro:macro>
+
+<!--Links-->
+
+<!-- World link-->
+<link name="world"/>
+
+<!-- Base link-->
+<link name="base_link">
+    
+    <xacro:default_inertial mass = "1.0"/>
+    
+    <visual>
+        <origin xyz="-0.5 -0.5 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/basement.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="-0.5 -0.5 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/basement.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+<!--base plate -->
+<link name="base_plate">
+    <xacro:default_inertial mass = "0.1"/>
+    <visual>
+        <origin xyz="-0.39 -0.39 -0.28" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/base_plate.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="-0.39 -0.39 -0.28" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/base_plate.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+    
+</link>
+
+<!-- Forward Drive arm-->
+<link name="forward_drive_arm">
+    
+    <xacro:default_inertial mass = "0.1"/>
+    <visual>
+        <origin xyz="0.19 0.06 -0.08" rpy="0.0 -${PI/2} ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/forward_drive_arm.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="0.19 0.06 -0.08" rpy="0.0 -${PI/2} ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/forward_drive_arm.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+<!-- Horizontal Arm -->
+<link name="horizontal_arm">
+    <xacro:default_inertial mass = "0.1"/>
+    <visual>
+        <origin xyz="-0.03 -0.40 -0.06" rpy="${PI/2} 0.0 ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/horizontal_arm.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="-0.03 -0.40 -0.06" rpy="${PI/2} 0.0 ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/horizontal_arm.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+<!-- Claw Support -->
+<link name="claw_support">
+    <xacro:default_inertial mass = "0.05"/>
+    <visual>
+        <origin xyz="0.0 -0.05 -0.15" rpy="0.0 0.0 ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/claw_support.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="0.0 -0.05 -0.15" rpy="0.0 0.0 ${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/claw_support.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+
+<!-- Gripper -->
+<!-- Right gripper finger -->
+<link name="right_gripper_finger">
+    <xacro:default_inertial mass = "0.01"/>
+    <visual>
+        <origin xyz="-0.1 0.5 -0.1" rpy="0.0 0.0 -${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/right_finger.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="-0.1 0.5 -0.1" rpy="0.0 0.0 -${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/right_finger.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+<!-- Left gripper finger -->
+<link name="left_gripper_finger">
+    <xacro:default_inertial mass = "0.01"/>
+    <visual>
+        <origin xyz="-0.04 0.5 0.0" rpy="0.0 0.0 -${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/left_finger.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+    
+    <collision>
+        <origin xyz="-0.04 0.5 0.0" rpy="0.0 0.0 -${PI/2}"/>
+        <geometry>
+            <mesh filename="package://arduinobot_description/meshes/left_finger.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+    </collision>
+</link>
+
+<!-- Joints -->
+<!-- Virtual joint-->
+<joint name="virtual_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="world"/>
+    <child link="base_link"/>
+</joint>
+
+<!-- Joint 1-->
+<joint name="joint_1" type="revolute">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="base_plate"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="${effort}" lower="-${PI/2}" upper="${PI/2}" velocity="${velocity}"/>
+</joint>   
+
+<!-- Joint 2-->
+<joint name = "joint_2" type="revolute">
+    <origin xyz = "-0.02 0.0 0.35" rpy = "0.0 0.0 0.0"/>
+    <parent link = "base_plate"/>
+    <child link = "forward_drive_arm"/>
+    <axis xyz = "1.0 0.0 0.0"/>
+    <limit effort = "${effort}" lower = "-${PI/2}" upper = "${PI/2}" velocity = "${velocity}"/>
+</joint>
+
+<!-- Joint 3-->
+<joint name = "joint_3" type="revolute">
+    <origin xyz = "0.0 0.0 0.8" rpy = "0.0 0.0 0.0"/>
+    <parent link = "forward_drive_arm"/>
+    <child link = "horizontal_arm"/>
+    <axis xyz = "1.0 0.0 0.0"/>
+    <limit effort = "${effort}" lower = "0.0" upper = "${PI}" velocity = "${velocity}"/>
+</joint>
+
+<!-- Joint 4 (horizontal_arm_to_claw_support)-->
+<joint name = "horizontal_arm_to_claw_support" type="fixed">
+    <origin xyz = "0.0 0.82 0.0" rpy = "0.0 0.0 0.0"/>
+    <parent link = "horizontal_arm"/>
+    <child link = "claw_support"/>
+    <limit effort = "${effort}" lower = "-${PI/2}" upper = "${PI/2}" velocity = "${velocity}"/>
+</joint>
+
+<!-- Joint 5 (claw_support_to_right_gripper_finger)-->
+<joint name = "claw_support_to_right_gripper_finger" type="revolute">
+    <origin xyz = "-0.04 0.13 0.01" rpy = "0.0 0.0 0.0"/>
+    <parent link = "claw_support"/>
+    <child link = "right_gripper_finger"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    
+    <limit effort = "${effort}" lower = "-${PI/2}" upper = "0.0" velocity = "${velocity}"/>
+</joint>
+
+<!-- Joint 6 (claw_support_to_left_gripper_finger)-->
+<joint name = "claw_support_to_left_gripper_finger" type="revolute">
+    <origin xyz = "-0.22 0.13 -0.1" rpy = "0.0 0.0 0.0"/>
+    <parent link = "claw_support"/>
+    <child link = "left_gripper_finger"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort = "${effort}" lower = "0.0" upper = "${PI/2}" velocity = "${velocity}"/>
+    <mimic joint = "claw_support_to_right_gripper_finger" multiplier = "-1.0"/>
+</joint>
+
+<!-- Transmissions -->
+<xacro:default_transmission params = "joint_1"/>
+<xacro:default_transmission params = "joint_2"/>
+<xacro:default_transmission params = "joint_3"/>
+<xacro:default_transmission params = "horizontal_arm_to_claw_support"/>
+
+</robot>
