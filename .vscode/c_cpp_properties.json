@@ -1,22 +1,24 @@
 {
-    "configurations": [
-        {
-            "browse": {
-                "databaseFilename": "${default}",
-                "limitSymbolsToIncludedHeaders": false
-            },
-            "includePath": [
-                "/opt/ros/humble/include/**",
-                "/home/newton/ROS2/arduino_bot/src/arduinobot_cpp_examples/include/**",
-                "/usr/include/**",
-                "/opt/ros/humble/include/rclcpp"
-            ],
-            "name": "ROS",
-            "intelliSenseMode": "gcc-x64",
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "gnu11",
-            "cppStandard": "c++14"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/opt/ros/humble/include/**",
+        "/home/newton/ROS2/arduino_bot/src/arduinobot_control/include/**",
+        "/home/newton/ROS2/arduino_bot/src/arduinobot_cpp_examples/include/**",
+        "/home/newton/ROS2/arduino_bot/src/arduinobot_description/include/**",
+        "/home/newton/ROS2/arduino_bot/src/arduinobot_msgs/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
 }
