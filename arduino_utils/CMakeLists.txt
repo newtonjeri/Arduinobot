@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(arduinobot_msgs)
+project(arduino_utils)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,14 +7,33 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(arduinobot_msgs REQUIRED)
 
-rosidl_generate_interfaces(
-  ${PROJECT_NAME}
-  "srv/AddTwoInts.srv"
-  "srv/QuaternionToEuler.srv"
-  "srv/EulerToQuaternion.srv"
+# cpp executables
+add_executable(angle_conversion_services src/angle_conversion_services.cpp)
+ament_target_dependencies(angle_conversion_services rclcpp arduinobot_msgs tf2)
+
+#install cpp executables
+install(
+  TARGETS
+    angle_conversion_services
+  DESTINATION
+    lib/${PROJECT_NAME}
+)
+
+# install python modules
+ament_python_install_package(${PROJECT_NAME})
+
+# install python executables
+install(
+  PROGRAMS
+    ${PROJECT_NAME}/angle_conversion_service.py
+  DESTINATION 
+    lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding= "UTF-8"?>
+
+<robot name="robot_name">
+
+
+    <group name="arm_group">
+        <joint name = "virtual_joint"/>
+        <joint name = "joint_1"/>
+        <joint name = "joint_2"/>
+        <joint name = "joint_3"/>
+        <joint name = "horizontal_arm_to_claw_support"/>
+    </group>
+
+    <group name = "gripper_group">
+        <joint name = "claw_support_to_right_gripper_finger"/>
+        <joint name = "claw_support_to_left_gripper_finger"/>
+    </group>
+
+    <group_state name = "home" group = "arm_group">
+        <joint name = "joint_1" value = "0"/>
+        <joint name = "joint_2" value = "0"/>
+        <joint name = "joint_3" value = "0"/>
+
+    </group_state>
+
+    <group_state name = "close" group = "gripper_group">
+        <joint name = "claw_support_to_right_gripper_finger" value = "0"/>
+    </group_state>
+
+    <group_state name = "open" group = "gripper_group">
+        <joint name = "claw_support_to_right_gripper_finger" value = "-0.77"/>
+    </group_state>
+
+   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
+    <!-- <passive_joint name="joint_5"/> -->
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="base_link" link2="base_plate" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="forward_drive_arm" reason="Never"/>
+    <disable_collisions link1="base_plate" link2="forward_drive_arm" reason="Adjacent"/>
+    <disable_collisions link1="claw_support" link2="forward_drive_arm" reason="Never"/>
+    <disable_collisions link1="claw_support" link2="left_gripper_finger" reason="Adjacent"/>
+    <disable_collisions link1="claw_support" link2="right_gripper_finger" reason="Adjacent"/>
+    <disable_collisions link1="claw_support" link2="horizontal_arm" reason="Adjacent"/>
+    <disable_collisions link1="forward_drive_arm" link2="left_gripper_finger" reason="Never"/>
+    <disable_collisions link1="forward_drive_arm" link2="right_gripper_finger" reason="Never"/>
+    <disable_collisions link1="forward_drive_arm" link2="horizontal_arm" reason="Adjacent"/>
+    <disable_collisions link1="left_gripper_finger" link2="horizontal_arm" reason="Never"/>
+    <disable_collisions link1="right_gripper_finger" link2="horizontal_arm" reason="Never"/>
+    <disable_collisions link1="right_gripper_finger" link2="left_gripper_finger" reason="Adjacent"/>
+</robot>

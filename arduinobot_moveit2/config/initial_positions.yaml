@@ -1,0 +1,5 @@
+initial_positions:
+  joint_1: 0
+  joint_2: 0
+  joint_3: 0
+  claw_support_to_right_gripper_finger: 0
