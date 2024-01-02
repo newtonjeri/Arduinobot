@@ -222,7 +222,6 @@
     <parent link = "claw_support"/>
     <child link = "right_gripper_finger"/>
     <axis xyz="0.0 0.0 1.0"/>
-    
     <limit effort = "${effort}" lower = "-${PI/2}" upper = "0.0" velocity = "${velocity}"/>
 </joint>
 
@@ -240,6 +239,6 @@
 <xacro:default_transmission joint = "joint_1"/>
 <xacro:default_transmission joint = "joint_2"/>
 <xacro:default_transmission joint = "joint_3"/>
-<xacro:default_transmission joint = "horizontal_arm_to_claw_support"/>
+<xacro:default_transmission joint = "claw_support_to_right_gripper_finger"/>
 
 </robot>
