@@ -52,7 +52,7 @@ namespace arduinobot_action_server{
 
                     sequence.push_back(sequence[i] + sequence[i-1]);
                     goal_handle->publish_feedback(feedback);
-                    RCLCPP_INFO_STREAM(rclcpp::get_logger("rclcpp"), "Feedback - " << );
+                    RCLCPP_INFO_STREAM(rclcpp::get_logger("rclcpp"), "Feedback ");
                     loop_rate.sleep();
                 }
 

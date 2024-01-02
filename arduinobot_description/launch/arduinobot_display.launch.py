@@ -39,7 +39,7 @@ def generate_launch_description():
         output="screen",
     )
 
-    rviz_config = "/home/newton/ROS2/arduino_bot/src/arduinobot_description/rviz_config/rviz_sim.rviz"
+    rviz_config = os.path.join(get_package_share_directory("arduinobot_description"), "rviz_config", "rviz_sim.rviz")
 
     rviz2 = Node(
         package="rviz2",
