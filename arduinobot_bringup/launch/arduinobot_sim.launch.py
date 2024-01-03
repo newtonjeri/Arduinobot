@@ -24,8 +24,6 @@ def generate_launch_description():
         )
     )
 
-
-
     return LaunchDescription([
         gazebo,
         controllers,

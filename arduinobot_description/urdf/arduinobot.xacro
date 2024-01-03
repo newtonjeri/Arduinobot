@@ -9,31 +9,35 @@
     <xacro:property name="velocity" value="30.0"/>
     <xacro:property name="effort" value="10.0"/>
 
+    <!-- Inertial macro -->
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <mass value="${mass}"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </xacro:macro>
+
+    <!-- Transmission macro -->
+    <xacro:macro name="default_transmission" params="joint">
+        <transmission name="${joint}_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint}" role = "joint_1">
+                <mechanicalReduction>1.0</mechanicalReduction>
+            </joint>
+            <actuator name="${joint}_motor" role = "actuator_1"/>
+        </transmission>
+    </xacro:macro>
+
+    <!-- Camera urdf-->
+    <xacro:include filename="$(find arduinobot_description)/urdf/arduinobot_camera.xacro"/>
     
     <!-- Gazebo plugin file-->
     <xacro:include filename="$(find arduinobot_description)/urdf/arduinobot_gazebo.xacro"/>
     
     <!-- ros2 control -->
     <xacro:include filename="$(find arduinobot_description)/urdf/arduinobot_control.xacro"/>
-    
-<!-- Inertial macro -->
-<xacro:macro name="default_inertial" params="mass">
-    <inertial>
-        <mass value="${mass}"/>
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-    </inertial>
-</xacro:macro>
 
-<!-- Transmission macro -->
-<xacro:macro name="default_transmission" params="joint">
-    <transmission name="${joint}_transmission">
-        <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${joint}" role = "joint_1">
-            <mechanicalReduction>1.0</mechanicalReduction>
-        </joint>
-        <actuator name="${joint}_motor" role = "actuator_1"/>
-    </transmission>
-</xacro:macro>
+
 
 <!--Links-->
 
@@ -234,6 +238,46 @@
     <limit effort = "${effort}" lower = "0.0" upper = "${PI/2}" velocity = "${velocity}"/>
     <mimic joint = "claw_support_to_right_gripper_finger" multiplier = "-1.0"/>
 </joint>
+
+<!-- Sensors -->
+<!-- Camera -->
+<!-- Camera link -->
+<link name="rgb_camera">
+
+    <xacro:default_inertial mass="0.001"/>
+    <visual>
+        <origin xyz="-0.08 0.13 0.13" rpy="${-PI/2} 0 ${-PI/2}"/>
+        
+        <geometry>
+            <mesh filename = "package://arduinobot_description/meshes/pi_camera.STL" scale = "0.01 0.01 0.01"/>
+        </geometry>
+    </visual>
+
+    <collision>
+        <origin xyz="-0.08 0.13 0.13" rpy="${-PI/2} 0 ${-PI/2}"/>
+        <geometry>
+            <mesh filename = "package://arduinobot_description/meshes/pi_camera.STL" scale = "0.01 0.01 0.01"/>  
+        </geometry>
+    </collision>
+</link>
+
+<!-- Camera joint -->
+<joint name="rgb_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rgb_camera"/>
+    <origin xyz="0 0.45 0.2" rpy="0 -0.5 ${PI/2}"/>
+</joint>
+
+
+<!-- Camera optical link -->
+<link name="rgb_camera_optical"></link>
+
+<joint name="camera_optical_joint" type="fixed">
+    <parent link="rgb_camera"/>
+    <child link="rgb_camera_optical"/>
+    <origin xyz="0.0 0.0 0.0" rpy="${PI} ${PI/2} 0"/>
+</joint>
+
 
 <!-- Transmissions -->
 <xacro:default_transmission joint = "joint_1"/>
